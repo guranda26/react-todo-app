@@ -1,0 +1,56 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.todos {
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  max-width: 600px;
+}
+.todos > div {
+  display: flex;
+  flex-direction: column;
+}
+.users {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  max-width: fit-content;
+  margin: 25px auto;
+  padding: 15px;
+}
+
+.user-item {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+}
+.user-form {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.user-form input {
+  height: 28px;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.user-form button {
+  padding: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.user-item button {
+  padding: 5px 15px;
+  margin-top: 10px;
+  cursor: pointer;
+}
