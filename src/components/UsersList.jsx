@@ -31,6 +31,14 @@ class UsersList extends Component {
     console.error("Error info:", errorInfo);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextState.inputValue !== this.state.inputValue ||
+      nextState.users !== this.state.users ||
+      nextState.completed !== this.state.completed ||
+      nextProps.someProp !== this.props.someProp
+    );
+  }
   onChange = (event) => {
     const value = event.target.value;
 
