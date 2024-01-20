@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import UserItem from "./UserItem";
 
 class UsersList extends Component {
@@ -14,8 +14,26 @@ class UsersList extends Component {
     ],
   };
 
+  componentDidMount() {
+    console.log("Component is mounted");
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("Component is updated");
+  }
+
+  componentWillUnmount() {
+    console.log("Component is unmounted");
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error caught in component:", error);
+    console.error("Error info:", errorInfo);
+  }
+
   onChange = (event) => {
     const value = event.target.value;
+
     this.setState({
       inputValue: value,
     });
@@ -36,6 +54,7 @@ class UsersList extends Component {
       inputValue: "",
     });
   };
+
   removeUser = (id) => {
     const users = this.state.users.filter((user) => user.id !== id);
     this.setState({
@@ -64,6 +83,7 @@ class UsersList extends Component {
       users: [...prevState.users, { ...completedTask, redirect: "complete" }],
     }));
   };
+
   redirectUser = (id) => {
     const updatedUsers = this.state.users.filter((user) => user.id !== id);
     const completedTask = this.state.users.find((user) => user.id === id);

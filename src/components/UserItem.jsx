@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PureComponent } from "react";
 
 const UserItem = ({
   id,
@@ -25,4 +25,4 @@ const UserItem = ({
   );
 };
 
-export default UserItem;
+export default React.memo(UserItem);
