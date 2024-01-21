@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { useCallback } from "react";
 
 const UserItem = ({
   id,
@@ -19,7 +19,7 @@ const UserItem = ({
           <button onClick={() => moveToToDoAction(id)}>Move to ToDo</button>
         </>
       ) : (
-        <button onClick={() => action(id)}>{redirect}</button>
+        <button onClick={() => action(id)}>Complete</button>
       )}
     </div>
   );
