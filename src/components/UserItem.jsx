@@ -1,28 +1,44 @@
-import React, { useCallback } from "react";
+import React from "react";
+import styles from "../App.module.css";
 
-const UserItem = ({
-  id,
-  name,
-  action,
-  redirect,
-  isCompleted,
-  deleteAction,
-  moveToToDoAction,
-}) => {
-  return (
-    <div className={`user-item ${isCompleted ? "completed-task" : ""}`}>
-      <p>N: {id}</p>
-      <p>TASK: {name}</p>
-      {isCompleted ? (
-        <>
-          <button onClick={() => deleteAction(id)}>Delete</button>
-          <button onClick={() => moveToToDoAction(id)}>Move to ToDo</button>
-        </>
-      ) : (
-        <button onClick={() => action(id)}>Complete</button>
-      )}
-    </div>
-  );
-};
+const UserItem = React.memo(
+  ({
+    id,
+    name,
+    moveToInProgress,
+    inProgressComplete,
+    completeTask,
+    deleteAction,
+    moveToToDoAction,
+    isCompleted,
+    isInProgress,
+  }) => {
+    return (
+      <div
+        className={`${styles.userItem} ${
+          isCompleted ? isCompleted : isInProgress ? "in-progress-task" : ""
+        }`}
+      >
+        <p>N: {id}</p>
+        <p>TASK: {name}</p>
+        {isCompleted ? (
+          <>
+            <button onClick={() => deleteAction(id)}>Delete</button>
+            <button onClick={() => moveToToDoAction(id)}>Move to ToDo</button>
+          </>
+        ) : isInProgress ? (
+          <>
+            <button onClick={() => inProgressComplete(id)}>Complete</button>
+          </>
+        ) : (
+          <>
+            <button onClick={() => moveToInProgress(id)}>In Progress</button>
+            <button onClick={() => completeTask(id)}>Complete</button>
+          </>
+        )}
+      </div>
+    );
+  }
+);
 
-export default React.memo(UserItem);
+export default UserItem;
