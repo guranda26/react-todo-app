@@ -4,101 +4,82 @@ import UserItem from "./UserItem";
 class UsersList extends Component {
   state = {
     inputValue: "",
-    users: [
-      { id: 1, name: "Create JS object", redirect: "complete" },
-      { id: 2, name: "Create project with React", redirect: "complete" },
-    ],
-    completed: [
-      { id: 1, name: "Create Modal" },
-      { id: 2, name: "Add products to the page" },
-    ],
+    users: [],
+    completed: [],
   };
 
   componentDidMount() {
-    console.log("Component is mounted");
+    const savedUsers = localStorage.getItem("users");
+    const savedCompleted = localStorage.getItem("completed");
+    this.setState({
+      users: savedUsers
+        ? JSON.parse(savedUsers)
+        : [
+            { id: 1, name: "Create JS object", redirect: "complete" },
+            { id: 2, name: "Create project with React", redirect: "complete" },
+          ],
+      completed: savedCompleted
+        ? JSON.parse(savedCompleted)
+        : [
+            { id: 1, name: "Create Modal" },
+            { id: 2, name: "Add products to the page" },
+          ],
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("Component is updated");
+    if (prevState.users !== this.state.users) {
+      localStorage.setItem("users", JSON.stringify(this.state.users));
+    }
+    if (prevState.completed !== this.state.completed) {
+      localStorage.setItem("completed", JSON.stringify(this.state.completed));
+    }
   }
 
-  componentWillUnmount() {
-    console.log("Component is unmounted");
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error("Error caught in component:", error);
-    console.error("Error info:", errorInfo);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      nextState.inputValue !== this.state.inputValue ||
-      nextState.users !== this.state.users ||
-      nextState.completed !== this.state.completed ||
-      nextProps.someProp !== this.props.someProp
-    );
-  }
   onChange = (event) => {
-    const value = event.target.value;
-
-    this.setState({
-      inputValue: value,
-    });
-
-    console.log(this.state.inputValue);
+    this.setState({ inputValue: event.target.value });
   };
 
   addUser = (event) => {
     event.preventDefault();
-
-    const user = {
-      id: this.state.users.length + 1,
-      name: this.state.inputValue,
-    };
-
-    this.setState({
-      users: [...this.state.users, user],
-      inputValue: "",
-    });
+    if (this.state.inputValue.trim()) {
+      const newUser = {
+        id: this.state.users.length + 1,
+        name: this.state.inputValue,
+        redirect: "complete",
+      };
+      this.setState((prevState) => ({
+        users: [...prevState.users, newUser],
+        inputValue: "",
+      }));
+    }
   };
 
   removeUser = (id) => {
-    const users = this.state.users.filter((user) => user.id !== id);
-    this.setState({
-      users,
-    });
+    this.setState((prevState) => ({
+      users: prevState.users.filter((user) => user.id !== id),
+    }));
   };
 
   removeCompletedTask = (id) => {
-    const updatedCompleted = this.state.completed.filter(
-      (task) => task.id !== id
-    );
-
-    this.setState({
-      completed: updatedCompleted,
-    });
+    this.setState((prevState) => ({
+      completed: prevState.completed.filter((task) => task.id !== id),
+    }));
   };
 
   moveToToDo = (id) => {
-    const completedTask = this.state.completed.find((task) => task.id === id);
-    const updatedCompleted = this.state.completed.filter(
-      (task) => task.id !== id
-    );
-
+    const task = this.state.completed.find((task) => task.id === id);
     this.setState((prevState) => ({
-      completed: updatedCompleted,
-      users: [...prevState.users, { ...completedTask, redirect: "complete" }],
+      completed: prevState.completed.filter((task) => task.id !== id),
+      users: [...prevState.users, { ...task, redirect: "complete" }],
     }));
   };
 
   redirectUser = (id) => {
-    const updatedUsers = this.state.users.filter((user) => user.id !== id);
-    const completedTask = this.state.users.find((user) => user.id === id);
-
+    const user = this.state.users.find((user) => user.id === id);
     this.setState((prevState) => ({
-      users: updatedUsers,
-      completed: [...prevState.completed, completedTask],
+      users: prevState.users.filter((user) => user.id !== id),
+      completed: [...prevState.completed, user],
     }));
   };
 
@@ -115,7 +96,7 @@ class UsersList extends Component {
           <button type="submit">Add Task</button>
         </form>
         <div className="todos">
-          <div>
+          <section>
             <h1>To Do Tasks</h1>
             {this.state.users.map((user) => (
               <UserItem
@@ -126,8 +107,8 @@ class UsersList extends Component {
                 redirect={user.redirect}
               />
             ))}
-          </div>
-          <div className="completed">
+          </section>
+          <section>
             <h1>Completed Tasks</h1>
             {this.state.completed.map((task) => (
               <UserItem
@@ -141,7 +122,7 @@ class UsersList extends Component {
                 moveToToDoAction={this.moveToToDo}
               />
             ))}
-          </div>
+          </section>
         </div>
       </div>
     );
