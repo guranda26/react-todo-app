@@ -14,6 +14,10 @@ Technologies Used
 Frontend: React.js
 Styling: CSS
 
+# Deployment
+
+[deploy link](https://react-todo-afuqg5hfn-guranda26s-projects.vercel.app/)
+
 # Getting Started with Create React App
 
 ## Available Scripts
